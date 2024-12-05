@@ -1,0 +1,48 @@
+{
+  "name": "financeapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.13.5",
+    "@emotion/server": "^11.11.0",
+    "@mui/material-nextjs": "^6.1.8",
+    "@next/font": "^14.2.15",
+    "@reduxjs/toolkit": "^2.4.0",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.4.6",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.1",
+    "next": "15.0.3",
+    "next-client-cookies": "^2.0.0",
+    "nodemailer": "^6.9.16",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-hot-toast": "^2.4.1",
+    "react-redux": "^9.1.2",
+    "react-select": "^5.8.3",
+    "styled-components": "^6.1.13",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    
+  
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "17.0.14",
+    "@types/react-dom": "17.0.14"
+  }
+}
