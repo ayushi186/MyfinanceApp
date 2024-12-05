@@ -1,0 +1,4 @@
+app/* linguist-documentation=false
+app/* linguist-vendored
+app/** linguist-documentation=false
+app/** linguist-vendored
