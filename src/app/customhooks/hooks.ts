@@ -18,10 +18,9 @@ type IBudgets = {
 export const useTransactions = (select?: any) => useQuery({
     queryKey: ["transactions"],
     queryFn: () => jsondata?.transactions,
-    select,
     staleTime: Infinity,
     refetchOnMount : false,
-    
+    select,
     
   }); 
 
@@ -30,7 +29,10 @@ export const useTransactions = (select?: any) => useQuery({
     return useTransactions(<trans>(data: trans[]) => data.filter((item : any) =>  item?.recurring === true))
   }
 
- 
+  export const useTotalSumRecTrans = () => {
+    return useTransactions(<trans>(data: trans[]) => data.filter((item : any) =>  item?.recurring === true).map((item : any) => item?.amount).reduce((prev, curr) => prev + curr, 0))
+
+  }
 
   
 export const useUserId = () => useQuery({

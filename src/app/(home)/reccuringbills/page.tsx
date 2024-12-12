@@ -23,8 +23,9 @@ const RecurringBillsCard = styled.div`
 
 export default function ReccuringBills() {
   const { data: transaction } = useRecurringTransactions();
+  const { data: totalBillSpent } = useTotalSumRecTrans();
 
-  console.log(transaction, "transactionrec");
+  console.log(transaction, "transaction");
 
   return (
     <>
