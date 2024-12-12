@@ -7,6 +7,8 @@ import axios from "axios";
 import PotModal from "@/app/components/PotModal";
 import { v4 as uuidv4, v4 } from "uuid";
 import AddMoneyModal from "@/app/components/AddMoneyModel";
+import { useBudget, usePots, useUserId } from "@/app/customhooks/hooks";
+import DeleteRecordModal from "@/app/components/DeleteRecordModal";
 
 export const StyledBullet = styled.div<{
   fillcolor: string;
@@ -30,34 +32,30 @@ type IPots = {
 };
 
 export default function Pots() {
-  const [pots, setPots] = useState<IPots[] | undefined>();
+  // const [pots, setPots] = useState<IPots[] | undefined>();
   const [showModal, setShowModal] = useState(false);
-  const [username, setUserName] = useState();
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
   const [potId, setPotId] = useState<string | undefined>();
   const [showMoneyModal, setMoneyModal] = useState<boolean>();
-  useEffect(() => {
-    const getUserDetails = async () => {
-      const res = await axios.get("/api/users/me");
-      setUserName(res?.data?.data?.username);
-      console.log("response", res?.data?.data?._id);
-    };
-    getUserDetails();
-  }, []);
 
-  useEffect(() => {
-    const getBudgets = async () => {
-      const res = await axios
-        .get("/api/pots/getPots")
-        .then((res) => setPots(res?.data?.data));
-    };
-    getBudgets();
-  }, [showModal, showMoneyModal]);
+  const { data: username } = useUserId();
 
-  const EditPot = async (id: string) => {
-    const res = await axios
-      .patch(`/api/pots/${id}`)
-      .then((res) => console.log("potspatch", res));
-  };
+  const { data: budgets } = useBudget();
+
+  const { data: pots } = usePots(budgets);
+
+  // const EditPot = async (id: string) => {
+  //   const res = await axios
+  //     .patch(`/api/pots/${id}`)
+  //     .then((res) => console.log("potspatch", res));
+  // };
+
+  // const deletePot = async (id: string | undefined) => {
+  //   const res = await axios
+  //     .delete(`/api/pots/${id}`)
+  //     .then((res) => console.log("potspatch", res));
+  // };
 
   return (
     <div className="flex flex-col">
@@ -89,19 +87,37 @@ export default function Pots() {
             potId={potId}></AddMoneyModal>
         )}
       </div>
-      <div className=" flex flex-wrap justify-around" key={v4()}>
+      <div>
+        {showConfirmationModal && (
+          <DeleteRecordModal
+            onClose={() => setShowConfirmationModal(false)}
+            id={potId}></DeleteRecordModal>
+        )}
+      </div>
+      <div className=" flex flex-wrap justify-between p-4" key={v4()}>
         {pots?.map((pot: IPots, idx: number) => {
           const width = (pot.total / pot.target) * 100;
           const remaining = pot.target - pot.total;
           return (
             <div className="bg-white rounded-xl p-6 mt-5 mb-5" key={v4()}>
-              <div className="flex items-center pb-5 ">
-                <StyledBullet
-                  fillcolor={pot.theme}
-                  br={true}
-                  height={15}
-                  width={15}></StyledBullet>
-                <div>{pot.name}</div>
+              <div className="flex justify-between">
+                <div className="flex items-center pb-5 ">
+                  <StyledBullet
+                    fillcolor={pot.theme}
+                    br={true}
+                    height={15}
+                    width={15}></StyledBullet>
+                  <div>{pot.name}</div>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setPotId(pot._id);
+                    setShowConfirmationModal(true);
+                  }}
+                  style={{ cursor: "pointer" }}>
+                  ...{" "}
+                </div>
               </div>
               <div className="flex justify-between pt-5 pb-5">
                 <div>Total Saved</div>

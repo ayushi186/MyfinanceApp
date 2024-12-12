@@ -1,8 +1,10 @@
 "use client";
 
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { SyntheticEvent, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useLoader } from "../customhooks/hooks";
 
 type IModal = {
   onClose: Function;
@@ -11,7 +13,17 @@ type IModal = {
   title: string;
 };
 
+type IPots = {
+  name: string;
+  target: number;
+  total: number;
+  theme: string;
+};
+
 export default function PotModal({ onClose, title, username }: IModal) {
+  const { showLoader, hideLoader } = useLoader();
+
+  const queryClient = useQueryClient();
   const handleCloseClick = (e) => {
     e.preventDefault();
     onClose();
@@ -24,16 +36,25 @@ export default function PotModal({ onClose, title, username }: IModal) {
     username: username,
   });
 
-  const SavePot = async (e: SyntheticEvent) => {
-    try {
-      const res = await axios.post("/api/pots/addPots", pot);
-      console.log("budgetres", res);
-    } catch (error: any) {
+  const { mutate, isError } = useMutation({
+    mutationFn: (pot: IPots) => {
+      return axios.post("/api/pots/addPots", pot);
+    },
+    onMutate: () => {
+      isError === false ? showLoader("Saving pot") : hideLoader();
+    },
+
+    onSuccess: () => {
+      hideLoader();
+      onClose();
+      return queryClient.invalidateQueries({ queryKey: ["pots"] });
+    },
+    onError: (error: any) => {
+      hideLoader();
       toast.error(error.response.data.error);
-    } finally {
-      handleCloseClick(e);
-    }
-  };
+    },
+    onSettled: () => {},
+  });
   return (
     <>
       <Toaster></Toaster>
@@ -59,10 +80,13 @@ export default function PotModal({ onClose, title, username }: IModal) {
               <div className="flex flex-col m-4">
                 <label htmlFor="BudgetName">Target</label>
                 <input
-                  type="number"
+                  type="text"
                   className="border border-grey-500 p-3 rounded-md"
                   value={pot.target}
-                  onChange={(e) => setPot({ ...pot, target: +e.target.value })}
+                  pattern="\d+(\.\d{2})?"
+                  onChange={(e) =>
+                    setPot({ ...pot, target: Number(e.target.value) })
+                  }
                 />
               </div>
               <div className="flex flex-col m-4">
@@ -75,7 +99,7 @@ export default function PotModal({ onClose, title, username }: IModal) {
                 />
               </div>
               <div>
-                <button onClick={(e) => SavePot(e)}>Add Pot</button>
+                <button onClick={(e) => mutate(pot)}>Add Pot</button>
               </div>
             </div>
             {/* <div className="modal-body">{children}</div> */}

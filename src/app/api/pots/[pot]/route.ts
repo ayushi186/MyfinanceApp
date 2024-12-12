@@ -29,16 +29,13 @@ export const GET = async(request: NextRequest , context: {params: any})  =>{
 
 
 export const PATCH  = async(request: NextRequest, context: {params: any}) =>{
-const potsId = context.params.pot;
+const potsId = await context.params.pot;
 
 
 try {
     const reqBody = await request.json();
    
     const { name, target, total , theme, username }= reqBody;
-    console.log("found reqBody", name)
-    
-    
     await connect();
 
     const newPot = await Pots.findOne({_id: potsId })
@@ -67,4 +64,38 @@ try {
 }
 
 
+}
+
+export const DELETE = async(request: NextRequest, context: {params: any}) =>{
+    
+    
+    try {
+        await connect();
+        const potsId = await context.params;
+        const potTobeDelets = await Pots.findOne({_id: potsId.pot })
+        console.log("potTobeDelets", potTobeDelets)
+        if(!potTobeDelets){
+            return new NextResponse(JSON.stringify({ message: "pot not found"}))
+        }
+        const deletedPot = await Pots.findByIdAndDelete (
+            potsId.pot, 
+        );
+        if(deletedPot){
+            console.log("deletedPOt", deletedPot)
+            debugger;
+            return new NextResponse(
+                JSON.stringify({message: "pot deleted" , pot: deletedPot}),
+                { status: 200},
+            )
+        }
+        
+        
+        
+    } catch (error) {
+        return NextResponse.json({
+            message: "some error message"
+            
+        })
+        
+    }
 }

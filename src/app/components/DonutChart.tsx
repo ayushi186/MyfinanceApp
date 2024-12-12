@@ -31,7 +31,7 @@ export default function DonutChart({
     plugins: {
       responsive: true,
     },
-    cutout: chartdata?.map((item: IBudgets, ids: number) => 400),
+    cutout: chartdata?.map((item: IBudgets, ids: number) => 600),
   };
 
   const finalData = {
@@ -67,6 +67,7 @@ export default function DonutChart({
       options={{
         responsive: true,
         maintainAspectRatio: false,
+        cutout: "75%",
       }}
     />
   );

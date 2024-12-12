@@ -18,6 +18,7 @@ import {
   SmallImage,
 } from "../components/SVG";
 import { ReactNode, useEffect, useState } from "react";
+import { useLoader } from "../customhooks/hooks";
 
 type IPageType = {
   name?: string;
@@ -77,11 +78,19 @@ export default function NavBar({
       ),
     },
   ];
+  const { showLoader, hideLoader } = useLoader();
 
   const NavItem = ({ name, path, compName }: IPageType) => {
     return (
       <div>
-        <Link href={{ pathname: path }}>
+        <Link
+          href={{ pathname: path }}
+          onClick={() => {
+            showLoader("Loading...");
+            setTimeout(() => {
+              hideLoader();
+            }, 1000);
+          }}>
           <div
             className={
               (pathname === path ? "active" : "text-grey300") + " flex p-5"

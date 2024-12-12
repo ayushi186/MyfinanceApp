@@ -6,24 +6,29 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { useCookies } from "next-client-cookies";
+import { useLoader } from "../customhooks/hooks";
 
 const LoginPage = () => {
   const router = useRouter();
 
   const [user, setUser] = useState({ email: "", password: "" });
+  const { showLoader, hideLoader } = useLoader();
   const [userId, setUserId] = useState();
 
   const onLogin = async () => {
+    showLoader("Signing In..");
     try {
       const res = await axios.post("/api/users/login", user);
 
-      toast.success("Successfully logedin!");
+      // toast.success("Successfully logedin!");
 
       router.push("/profile");
     } catch (error: any) {
+      hideLoader();
       console.log("login cfailed", error);
       toast.error(error.response.data.error);
     } finally {
+      hideLoader();
     }
   };
   const [buttonDisabled, setButtonDisabled] = useState(false);

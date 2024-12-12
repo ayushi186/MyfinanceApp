@@ -1,8 +1,14 @@
 "use client";
 
-import axios from "axios";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import axios, { AxiosResponse } from "axios";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useBudget, useLoader } from "../customhooks/hooks";
 
 type IModal = {
   onClose: Function;
@@ -11,7 +17,15 @@ type IModal = {
   title: string;
 };
 
+type IBudgets = {
+  username: string | undefined;
+  category: string;
+  maximum: number;
+  theme: string;
+};
+
 export default function BudgetModal({ onClose, title, username }: IModal) {
+  const { showLoader, hideLoader } = useLoader();
   const handleCloseClick = (e) => {
     e.preventDefault();
     onClose();
@@ -21,6 +35,23 @@ export default function BudgetModal({ onClose, title, username }: IModal) {
     category: "",
     maximum: 0,
     theme: "",
+  });
+  // const { data: budgetreloaded } = useBudget();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (budget: IBudgets) => {
+      showLoader("Saving the budget");
+      return axios.post("/api/budgets/addbudget", budget);
+    },
+    onSuccess: () => {
+      hideLoader();
+      onClose();
+      return queryClient.invalidateQueries({ queryKey: ["budget"] });
+    },
+    onError: () => {
+      hideLoader();
+    },
   });
 
   const SaveBudget = async () => {
@@ -80,7 +111,9 @@ export default function BudgetModal({ onClose, title, username }: IModal) {
                 />
               </div>
               <div>
-                <button onClick={SaveBudget}>Add Budget</button>
+                <button onClick={() => mutation.mutate(budget)}>
+                  Add Budget
+                </button>
               </div>
             </div>
             {/* <div className="modal-body">{children}</div> */}
@@ -89,4 +122,7 @@ export default function BudgetModal({ onClose, title, username }: IModal) {
       </div>
     </>
   );
+}
+function useBudgetsMutation() {
+  throw new Error("Function not implemented.");
 }

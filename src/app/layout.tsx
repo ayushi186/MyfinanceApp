@@ -3,6 +3,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Public_Sans } from "@next/font/google";
 import StoreProvider from "@/app/store/StoreProvider";
+import QueryProvider from "./components/QueryProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ClerkProvider } from "@clerk/nextjs";
+import { LoaderProvider } from "./components/LoaderProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,16 +34,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Rubik:ital@0;1&display=swap"
-          rel="stylesheet"></link>
-      </head>
+    <QueryProvider>
+      <html lang="en">
+        <head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Rubik:ital@0;1&display=swap"
+            rel="stylesheet"></link>
+        </head>
 
-      <body className={`${publicSans.className} ${geistSans.className}`}>
-        <StoreProvider>{children}</StoreProvider>
-      </body>
-    </html>
+        <body className={`${publicSans.className} ${geistSans.className}`}>
+          <StoreProvider>
+            {" "}
+            <LoaderProvider>{children} </LoaderProvider>
+          </StoreProvider>
+        </body>
+      </html>
+    </QueryProvider>
   );
 }

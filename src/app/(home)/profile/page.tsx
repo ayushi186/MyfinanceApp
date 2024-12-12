@@ -14,6 +14,15 @@ import { dateCalculator } from "@/helpers/helperfunctions";
 import TransactionsTile from "@/app/components/TransactionsTile";
 import { useSelector } from "react-redux";
 
+import { useQuery } from "@tanstack/react-query";
+import {
+  useBudget,
+  usePots,
+  useTransactions,
+  useUserId,
+} from "@/app/customhooks/hooks";
+import { Icategory } from "../budgets/page";
+
 const ColoredLabels = styled.div<{ bgcolor: string }>`
   height: 50px;
   width: 5px;
@@ -35,7 +44,7 @@ type IPots = {
   theme: string;
 };
 
-type Itrans = {
+export type Itrans = {
   avatar: string;
   name: string;
   category: string;
@@ -45,30 +54,24 @@ type Itrans = {
 };
 
 const ProfilePage = () => {
-  const router = useRouter();
-  const [data, setData] = useState("");
-  const [chartData, setChartData] = useState<IBudgets[] | undefined>();
-  const [pots, setPots] = useState<IPots[] | undefined>();
   const [savedPots, setSavedPots] = useState<number>();
   const [recrringTrans, setRecrringTrans] = useState<Itrans[] | undefined>();
   const [totalPaid, setTotalPaid] = useState<Itrans[] | undefined>();
   const [sumtotalPaid, setSumTotalPaid] = useState<number>();
   const [transaction, setTransactions] = useState<Itrans[] | undefined>();
+  const [showModal, setShowModal] = useState(false);
+  const [filterTrans, setFilterTrans] = useState<Itrans[][] | undefined>();
+  const category: Icategory[] | undefined = [];
+  const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
+  const [spentsum, setspentsum] = useState<number | undefined>();
+  const [maximumsum, setmaximumsum] = useState<number | undefined>();
 
+  const { data } = useUserId();
+  const { data: transactions } = useTransactions();
+  const { data: chartData } = useBudget();
+
+  const { data: pots } = usePots(chartData);
   useEffect(() => {
-    const getUserDetails = async () => {
-      const res = await axios.get("/api/users/me");
-      setData(res?.data?.data?._id);
-    };
-
-    getUserDetails();
-
-    const getBudgets = async () => {
-      const res = await axios.get("/api/budgets/getbudget");
-      setChartData(res?.data?.data);
-    };
-    getBudgets();
-
     setRecrringTrans(
       chartdata?.transactions.filter((i) => i.recurring === true)
     );
@@ -94,15 +97,6 @@ const ProfilePage = () => {
   }, [pots]);
 
   useEffect(() => {
-    const getPotsfromdb = async () => {
-      const res = await axios
-        .get("/api/pots/getPots")
-        .then((res) => setPots(res?.data?.data));
-    };
-    getPotsfromdb();
-  }, [chartData]);
-
-  useEffect(() => {
     const getTotalSpent = (recrringTrans: Itrans[]) => {
       const sum = recrringTrans
         .map((item) => item.amount)
@@ -114,6 +108,46 @@ const ProfilePage = () => {
       getTotalSpent(totalPaid);
     }
   }, [totalPaid]);
+  useEffect(() => {
+    if (transactions != undefined && chartData != undefined) {
+      const filtereddata = chartData?.map((bud: IBudgets, idx: number) => {
+        const transactionPercat = transactions?.filter(
+          (item) => item.category === bud.category
+        );
+        const sum: number | undefined = transactionPercat
+          ?.map((item) => item.amount)
+          ?.reduce((prev, curr) => prev + curr, 0);
+
+        category.push({
+          theme: bud.theme,
+          category: bud.category,
+          maximum: bud.maximum,
+          sum: sum,
+        });
+      });
+      if (filtereddata) {
+        setCategotySpent(category);
+      }
+    }
+  }, [chartData, transactions]);
+
+  useEffect(() => {
+    if (category) {
+      let spentsum: number | undefined = category
+        ?.map((item: Icategory, idx: number) => item.sum)
+        ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
+      if (spentsum) {
+        setspentsum(spentsum);
+      }
+
+      let maximumsum: number = category
+        ?.map((item: Icategory, idx: number) => item.maximum)
+        ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
+      if (maximumsum) {
+        setmaximumsum(maximumsum);
+      }
+    }
+  }, [category]);
 
   return (
     <>
@@ -196,10 +230,36 @@ const ProfilePage = () => {
               style={{ height: "400px" }}
               className="flex-1 bg-white  rounded-2xl m-4">
               <div className=" doughnut-chart flex-1   m-4">
-                <div>Budgets</div>
-                <DonutChart
-                  chartdata={chartData}
-                  summarydata={true}></DonutChart>
+                <div
+                  style={{
+                    height: "350px",
+                    width: "500px",
+                    position: "relative",
+                  }}
+                  className="flex-1   ">
+                  <div>Budgets</div>
+                  <DonutChart
+                    chartdata={chartData}
+                    summarydata={true}></DonutChart>
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      top: "50%",
+                      left: 0,
+                      textAlign: "center",
+                      marginTop: "-10px",
+                      fontSize: "12px",
+                      //lineHeight: "20px",
+                    }}>
+                    <div className="text-gray-900 textpresetBold1 ">
+                      ${Math.abs(spentsum ?? 0)}
+                    </div>
+                    <div className="textpresetRegular2 text-gray-500">
+                      of ${maximumsum}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div

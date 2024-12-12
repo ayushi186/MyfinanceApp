@@ -438,6 +438,14 @@
             "date": "2024-07-02T19:50:05Z",
             "amount": -16.50,
             "recurring": false
+        }, 
+        {
+            "avatar": "images/avatars/swift-ride-share.jpg",
+            "name": "cake shop",
+            "category": "Birthday Party",
+            "date": "2024-07-02T19:50:05Z",
+            "amount": -16.50,
+            "recurring": false
         }
     ],
     "budgets": [

@@ -1,13 +1,16 @@
 "use client";
 import React, { Fragment, useEffect, useState } from "react";
 
-import data from "@/app/data.json";
+import jsondata from "@/app/data.json";
 import ProgressBar from "@/app/components/ProgressBar";
 import BudgetModal from "@/app/components/BudgetModal";
 import axios from "axios";
 import { StyledBullet } from "../pots/page";
 import DonutChart from "@/app/components/DonutChart";
 import { Interface } from "readline";
+import { useQuery } from "@tanstack/react-query";
+import { useBudget, useTransactions, useUserId } from "@/app/customhooks/hooks";
+import { useUser } from "@clerk/nextjs";
 
 type IBudgets = {
   _id: string;
@@ -24,7 +27,7 @@ type Itrans = {
   recurring: boolean;
 };
 
-interface Icategory {
+export interface Icategory {
   category: string;
   sum?: number | undefined;
   maximum: number;
@@ -32,33 +35,20 @@ interface Icategory {
 }
 
 export default function Budgets() {
-  const [username, setUserName] = useState<string>();
-  const [budget, setBudgets] = useState<IBudgets[] | undefined>();
-  const [transactions, setTransactions] = useState<Itrans[] | undefined>();
   const [showModal, setShowModal] = useState(false);
   const [filterTrans, setFilterTrans] = useState<Itrans[][] | undefined>();
   const category: Icategory[] | undefined = [];
   const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
-  useEffect(() => {
-    const getUserDetails = async () => {
-      const res = await axios.get("/api/users/me");
-      setUserName(res?.data?.data?.username);
-      console.log("response", res?.data?.data?._id);
-      setTransactions(data?.transactions);
-    };
-    getUserDetails();
-  }, []);
 
-  useEffect(() => {
-    const getBudgets = async () => {
-      const res = await axios
-        .get("/api/budgets/getbudget")
-        .then((res) => setBudgets(res?.data?.data));
-    };
-    getBudgets();
-  }, [showModal]);
+  const { data: username } = useUserId();
+
+  console.log("user", username);
+
+  const { data: transactions } = useTransactions();
+
+  const { data: budget } = useBudget();
 
   useEffect(() => {
     if (transactions != undefined && budget != undefined) {
@@ -69,7 +59,7 @@ export default function Budgets() {
         const sum: number | undefined = transactionPercat
           ?.map((item) => item.amount)
           ?.reduce((prev, curr) => prev + curr, 0);
-        //const objtest = { category: bud.category, maximum: maximum };
+
         category.push({
           theme: bud.theme,
           category: bud.category,
@@ -78,7 +68,6 @@ export default function Budgets() {
         });
       });
       if (filtereddata) {
-        //console.log("filterdata", category);
         setCategotySpent(category);
       }
     }
@@ -101,8 +90,6 @@ export default function Budgets() {
       }
     }
   }, [category]);
-
-  console.log(spentsum, maximumsum);
 
   let monthNames = [
     "Jan",
