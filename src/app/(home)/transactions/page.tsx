@@ -152,8 +152,9 @@ export default function Page() {
 
       setFilteredTrans(list);
     } else if (dropdownflag) {
-      const elem = document.getElementById("category");
-      const value = elem?.value;
+      const value = (document.getElementById("category") as HTMLInputElement)
+        .value;
+
       serachByCategory(value);
     } else {
       setFilteredTrans(data.transactions);
