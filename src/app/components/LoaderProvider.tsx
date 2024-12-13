@@ -15,7 +15,9 @@ export const LoaderContext = createContext<ILoaderContext | undefined>(
   undefined
 );
 
-export const LoaderProvider: React.FC<LoaderContextProvider> = (children) => {
+export const LoaderProvider: React.FC<LoaderContextProvider> = ({
+  children,
+}) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [loaderMessage, setLoaderMessage] = useState<string | undefined>();
 
