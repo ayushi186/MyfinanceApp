@@ -1,16 +1,12 @@
 "use client";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import jsondata from "@/app/data.json";
 import ProgressBar from "@/app/components/ProgressBar";
 import BudgetModal from "@/app/components/BudgetModal";
-import axios from "axios";
 import { StyledBullet } from "../pots/page";
 import DonutChart from "@/app/components/DonutChart";
-import { Interface } from "readline";
-import { useQuery } from "@tanstack/react-query";
+
 import { useBudget, useTransactions, useUserId } from "@/app/customhooks/hooks";
-import { useUser } from "@clerk/nextjs";
 
 type IBudgets = {
   _id: string;
@@ -36,15 +32,13 @@ export interface Icategory {
 
 export default function Budgets() {
   const [showModal, setShowModal] = useState(false);
-  const [filterTrans, setFilterTrans] = useState<Itrans[][] | undefined>();
+
   const category: Icategory[] | undefined = [];
   const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
 
   const { data: username } = useUserId();
-
-  console.log("user", username);
 
   const { data: transactions } = useTransactions();
 
@@ -76,14 +70,14 @@ export default function Budgets() {
   useEffect(() => {
     if (category) {
       let spentsum: number | undefined = category
-        ?.map((item: Icategory, idx: number) => item.sum)
+        ?.map((item: Icategory) => item.sum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (spentsum) {
         setspentsum(spentsum);
       }
 
       let maximumsum: number = category
-        ?.map((item: Icategory, idx: number) => item.maximum)
+        ?.map((item: Icategory) => item.maximum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (maximumsum) {
         setmaximumsum(maximumsum);

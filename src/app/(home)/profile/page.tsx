@@ -1,20 +1,16 @@
 "use client";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import OverviewTiles from "@/app/components/Overviewtiles";
 import DonutChart from "@/app/components/DonutChart";
 import chartdata from "@/app/data.json";
 import styled from "styled-components";
 import RecurringBillTile from "@/app/components/ReccurringBillsTile";
-import { v4 as uuidv4, v4 } from "uuid";
-import { dateCalculator } from "@/helpers/helperfunctions";
-import TransactionsTile from "@/app/components/TransactionsTile";
-import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 
-import { useQuery } from "@tanstack/react-query";
+import TransactionsTile from "@/app/components/TransactionsTile";
+
 import {
   useBudget,
   usePots,
@@ -58,15 +54,12 @@ const ProfilePage = () => {
   const [recrringTrans, setRecrringTrans] = useState<Itrans[] | undefined>();
   const [totalPaid, setTotalPaid] = useState<Itrans[] | undefined>();
   const [sumtotalPaid, setSumTotalPaid] = useState<number>();
-  const [transaction, setTransactions] = useState<Itrans[] | undefined>();
-  const [showModal, setShowModal] = useState(false);
-  const [filterTrans, setFilterTrans] = useState<Itrans[][] | undefined>();
+
   const category: Icategory[] | undefined = [];
   const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
 
-  const { data } = useUserId();
   const { data: transactions } = useTransactions();
   const { data: chartData } = useBudget();
 
@@ -110,7 +103,7 @@ const ProfilePage = () => {
   }, [totalPaid]);
   useEffect(() => {
     if (transactions != undefined && chartData != undefined) {
-      const filtereddata = chartData?.map((bud: IBudgets, idx: number) => {
+      const filtereddata = chartData?.map((bud: IBudgets) => {
         const transactionPercat = transactions?.filter(
           (item) => item.category === bud.category
         );
@@ -134,14 +127,14 @@ const ProfilePage = () => {
   useEffect(() => {
     if (category) {
       let spentsum: number | undefined = category
-        ?.map((item: Icategory, idx: number) => item.sum)
+        ?.map((item: Icategory) => item.sum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (spentsum) {
         setspentsum(spentsum);
       }
 
       let maximumsum: number = category
-        ?.map((item: Icategory, idx: number) => item.maximum)
+        ?.map((item: Icategory) => item.maximum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (maximumsum) {
         setmaximumsum(maximumsum);

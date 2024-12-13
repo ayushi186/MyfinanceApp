@@ -95,6 +95,6 @@ export const sortByAmount = ( data: transaction[]| undefined , direction : strin
 
 export const filter = <arrayType>(arr : arrayType[], filterby : string, typei : string) => {
     const filterbyvar = filterby
-    return arr.filter((item: any , idx)=> item?.filterbyvar === filterbyvar )
+    return arr.filter((item: any )=> item?.filterbyvar === filterbyvar )
 
 }

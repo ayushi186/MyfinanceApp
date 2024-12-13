@@ -1,11 +1,9 @@
 "use client";
 import axios from "axios";
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import logo from "/images/Logo.svg";
 
 import toast from "react-hot-toast";
 import {
@@ -15,9 +13,8 @@ import {
   Pots,
   RecurringBills,
   MinimiseNav,
-  SmallImage,
 } from "../components/SVG";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { useLoader } from "../customhooks/hooks";
 
 type IPageType = {
@@ -105,7 +102,6 @@ export default function NavBar({
 
   const [minimiseMenu, setMinimiseMenu] = useState<boolean>(false);
   const logout = async () => {
-    
     try {
       const res = await axios.get("/api/users/logout");
     } catch (error: any) {
@@ -143,7 +139,6 @@ export default function NavBar({
                 <MinimiseNav></MinimiseNav>
                 <button
                   onClick={() => {
-                    
                     setMinimiseMenu(!minimiseMenu);
                   }}
                   className="p-2 h-100">

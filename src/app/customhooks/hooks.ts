@@ -1,9 +1,9 @@
 import jsondata from "@/app/data.json";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useContext } from "react";
 import { LoaderContext } from "../components/LoaderProvider";
-import { trace } from "console";
+
 
 type IBudgets = {
     username: string | undefined;

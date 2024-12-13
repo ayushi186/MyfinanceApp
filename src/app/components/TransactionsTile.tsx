@@ -18,7 +18,7 @@ export default function TransactionsTile() {
 
   return (
     <div key={v4()} className="p-5">
-      {trs?.slice(0, 4)?.map((trans: Itrans, idx: number) => {
+      {trs?.slice(0, 4)?.map((trans: Itrans) => {
         let amountabs =
           trans.amount < 0
             ? `- $${Math.abs(trans.amount)}`

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
-import { useCookies } from "next-client-cookies";
+
 import { useLoader } from "../customhooks/hooks";
 
 const LoginPage = () => {

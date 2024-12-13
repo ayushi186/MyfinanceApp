@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import data from "@/app/data.json";
+import React, { useState } from "react";
+
 import ProgressBar from "@/app/components/ProgressBar";
 import styled from "styled-components";
-import axios from "axios";
+
 import PotModal from "@/app/components/PotModal";
-import { v4 as uuidv4, v4 } from "uuid";
+import { v4 } from "uuid";
 import AddMoneyModal from "@/app/components/AddMoneyModel";
 import { useBudget, usePots, useUserId } from "@/app/customhooks/hooks";
 import DeleteRecordModal from "@/app/components/DeleteRecordModal";
@@ -95,7 +95,7 @@ export default function Pots() {
         )}
       </div>
       <div className=" flex flex-wrap justify-between p-4" key={v4()}>
-        {pots?.map((pot: IPots, idx: number) => {
+        {pots?.map((pot: IPots) => {
           const width = (pot.total / pot.target) * 100;
           const remaining = pot.target - pot.total;
           return (
