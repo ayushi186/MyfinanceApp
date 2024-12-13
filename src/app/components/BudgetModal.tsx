@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { useLoader } from "../customhooks/hooks";
 
@@ -22,7 +22,7 @@ type IBudgets = {
 
 export default function BudgetModal({ onClose, username }: IModal) {
   const { showLoader, hideLoader } = useLoader();
-  const handleCloseClick = (e) => {
+  const handleCloseClick = (e: SyntheticEvent) => {
     e.preventDefault();
     onClose();
   };

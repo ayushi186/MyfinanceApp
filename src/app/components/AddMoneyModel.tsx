@@ -11,7 +11,7 @@ type IModal = {
 };
 
 export default function AddMoneyModal({ onClose, username, potId }: IModal) {
-  const handleCloseClick = (e) => {
+  const handleCloseClick = (e: SyntheticEvent) => {
     e.preventDefault();
     onClose();
   };

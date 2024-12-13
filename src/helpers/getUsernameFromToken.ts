@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+// @ts-ignore
 import jwt from "jsonwebtoken"
 export const getUsernameFormToken = (request: NextRequest) => {
    

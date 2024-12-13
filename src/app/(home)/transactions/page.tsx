@@ -25,9 +25,7 @@ export type transaction = {
 // };
 
 export default function Page() {
-  const [transactions, setTransactions] = useState<transaction[] | undefined>(
-    []
-  );
+  const [transactions, setTransactions] = useState<transaction[]>([]);
   const [categories, setCategories] = useState<string[]>();
   const [nPage, setNPage] = useState<any>();
   const [dropdownflag, setDropDownFlag] = useState<boolean>(false);
@@ -36,8 +34,8 @@ export default function Page() {
   >();
 
   useEffect(() => {
-    setTransactions(data.transactions);
-    setFilteredTrans(data.transactions);
+    setTransactions(data?.transactions);
+    setFilteredTrans(data?.transactions);
   }, []);
 
   useEffect(() => {
@@ -74,16 +72,18 @@ export default function Page() {
     filteredTrans: transaction[] | undefined
   ) => {
     if (value === "Latest") {
-      const unsortedarr = [...filteredTrans];
-      const sortedarray: transaction[] | undefined = sortByDate(
-        unsortedarr,
-        "ascending"
-      );
-      const newsortedarray: transaction[] | undefined = sortedarray;
-      setFilteredTrans(newsortedarray);
+      if (filteredTrans !== undefined) {
+        const unsortedarr = [...filteredTrans];
+        const sortedarray: transaction[] | undefined = sortByDate(
+          unsortedarr,
+          "ascending"
+        );
+
+        setFilteredTrans(sortedarray);
+      }
     }
 
-    if (value === "Oldest") {
+    if (value === "Oldest" && filteredTrans !== undefined) {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortByDate(
         unsortedarr,
@@ -93,7 +93,7 @@ export default function Page() {
       const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
-    if (value === " A to Z") {
+    if (value === " A to Z" && filteredTrans !== undefined) {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortBYName(
         unsortedarr,
@@ -102,7 +102,7 @@ export default function Page() {
       const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
-    if (value === "Z to A") {
+    if (value === "Z to A" && filteredTrans !== undefined) {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortBYName(
         unsortedarr,
@@ -111,7 +111,7 @@ export default function Page() {
       const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
-    if (value === "Highest") {
+    if (value === "Highest" && filteredTrans !== undefined) {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortByAmount(
         unsortedarr,
@@ -120,7 +120,7 @@ export default function Page() {
       const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
-    if (value === "Lowest") {
+    if (value === "Lowest" && filteredTrans !== undefined) {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortByAmount(
         unsortedarr,

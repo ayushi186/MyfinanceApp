@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useLoader } from "../customhooks/hooks";
 
@@ -24,7 +24,7 @@ export default function PotModal({ onClose, username }: IModal) {
   const { showLoader, hideLoader } = useLoader();
 
   const queryClient = useQueryClient();
-  const handleCloseClick = (e) => {
+  const handleCloseClick = (e: SyntheticEvent) => {
     e.preventDefault();
     onClose();
   };
