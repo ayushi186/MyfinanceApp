@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import ProgressBar from "@/app/components/ProgressBar";
 import BudgetModal from "@/app/components/BudgetModal";
-import { StyledBullet } from "../pots/page";
+import { StyledBullet } from "@/types";
 import DonutChart from "@/app/components/DonutChart";
 
 import { useBudget, useTransactions, useUserId } from "@/app/customhooks/hooks";

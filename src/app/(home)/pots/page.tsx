@@ -2,26 +2,13 @@
 import React, { useState } from "react";
 
 import ProgressBar from "@/app/components/ProgressBar";
-import styled from "styled-components";
 
 import PotModal from "@/app/components/PotModal";
 import { v4 } from "uuid";
 import AddMoneyModal from "@/app/components/AddMoneyModel";
 import { useBudget, usePots, useUserId } from "@/app/customhooks/hooks";
 import DeleteRecordModal from "@/app/components/DeleteRecordModal";
-
-export const StyledBullet = styled.div<{
-  fillcolor: string;
-  br: boolean;
-  height: number;
-  width: number;
-}>`
-  height: ${(props) => props.height}px;
-  width: ${(props) => props.width}px;
-  background-color: ${(prop) => prop.fillcolor};
-  border-radius: ${(props) => (props.br === true ? "10px" : "0px")};
-  margin-right: 10px;
-`;
+import { StyledBullet } from "@/types";
 
 type IPots = {
   _id: string | undefined;
