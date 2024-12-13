@@ -13,12 +13,11 @@ const LoginPage = () => {
 
   const [user, setUser] = useState({ email: "", password: "" });
   const { showLoader, hideLoader } = useLoader();
-  const [userId, setUserId] = useState();
 
   const onLogin = async () => {
     showLoader("Signing In..");
     try {
-      const res = await axios.post("/api/users/login", user);
+      await axios.post("/api/users/login", user);
 
       // toast.success("Successfully logedin!");
 
@@ -31,15 +30,15 @@ const LoginPage = () => {
       hideLoader();
     }
   };
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  // const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  });
+  // useEffect(() => {
+  //   if (user.email.length > 0 && user.password.length > 0) {
+  //     setButtonDisabled(false);
+  //   } else {
+  //     setButtonDisabled(true);
+  //   }
+  // });
   return (
     <>
       <div>

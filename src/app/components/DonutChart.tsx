@@ -1,6 +1,6 @@
 // src/components/MyDoughnutChart.js
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -9,7 +9,6 @@ import {
   plugins,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { plugin } from "mongoose";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -27,33 +26,16 @@ export default function DonutChart({
   chartdata: IBudgets[] | undefined;
   summarydata: boolean;
 }) {
-  const options: any = {
-    plugins: {
-      responsive: true,
-    },
-    cutout: chartdata?.map((item: IBudgets, ids: number) => 600),
-  };
-
   const finalData = {
-    label: summarydata
-      ? chartdata?.map((item: IBudgets, ids: number) => item.maximum)
-      : "",
+    label: summarydata ? chartdata?.map((item: IBudgets) => item.maximum) : "",
 
     datasets: [
       {
         data: summarydata
-          ? chartdata?.map((item: IBudgets, ids: number) =>
-              Math.round(item.maximum)
-            )
-          : chartdata?.map((item: IBudgets, ids: number) =>
-              Math.round(item.sum ?? 0)
-            ),
-        backgroundColor: chartdata?.map(
-          (item: IBudgets, ids: number) => item.theme
-        ),
-        borderColor: chartdata?.map(
-          (item: IBudgets, ids: number) => item.theme
-        ),
+          ? chartdata?.map((item: IBudgets) => Math.round(item.maximum))
+          : chartdata?.map((item: IBudgets) => Math.round(item.sum ?? 0)),
+        backgroundColor: chartdata?.map((item: IBudgets) => item.theme),
+        borderColor: chartdata?.map((item: IBudgets) => item.theme),
         borderWidth: 1,
         dataVisibility: new Array(chartdata?.length).fill(true),
       },

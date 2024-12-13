@@ -7,10 +7,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { useLoader } from "../customhooks/hooks";
 
 type IModal = {
-  onClose: Function;
+  onClose: () => void;
   username: string | undefined;
   //children: React.ReactNode;
-  title: string;
+  title?: string;
 };
 
 type IPots = {
@@ -20,7 +20,7 @@ type IPots = {
   theme: string;
 };
 
-export default function PotModal({ onClose, title, username }: IModal) {
+export default function PotModal({ onClose, username }: IModal) {
   const { showLoader, hideLoader } = useLoader();
 
   const queryClient = useQueryClient();
@@ -41,7 +41,7 @@ export default function PotModal({ onClose, title, username }: IModal) {
       return axios.post("/api/pots/addPots", pot);
     },
     onMutate: () => {
-      isError === false ? showLoader("Saving pot") : hideLoader();
+      showLoader("Saving pot");
     },
 
     onSuccess: () => {
@@ -99,7 +99,7 @@ export default function PotModal({ onClose, title, username }: IModal) {
                 />
               </div>
               <div>
-                <button onClick={(e) => mutate(pot)}>Add Pot</button>
+                <button onClick={() => mutate(pot)}>Add Pot</button>
               </div>
             </div>
             {/* <div className="modal-body">{children}</div> */}

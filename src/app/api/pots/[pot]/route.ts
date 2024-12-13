@@ -60,7 +60,10 @@ try {
 
     
 } catch (error: any) {
-    
+    return NextResponse.json({
+        message: "some error message"
+        
+    })
 }
 
 

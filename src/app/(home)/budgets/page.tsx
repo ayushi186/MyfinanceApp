@@ -46,7 +46,7 @@ export default function Budgets() {
 
   useEffect(() => {
     if (transactions != undefined && budget != undefined) {
-      const filtereddata = budget?.map((bud: IBudgets, idx: number) => {
+      const filtereddata = budget?.map((bud: IBudgets) => {
         const transactionPercat = transactions?.filter(
           (item) => item.category === bud.category
         );
@@ -69,14 +69,14 @@ export default function Budgets() {
 
   useEffect(() => {
     if (category) {
-      let spentsum: number | undefined = category
+      const spentsum: number | undefined = category
         ?.map((item: Icategory) => item.sum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (spentsum) {
         setspentsum(spentsum);
       }
 
-      let maximumsum: number = category
+      const maximumsum: number = category
         ?.map((item: Icategory) => item.maximum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (maximumsum) {
@@ -85,7 +85,7 @@ export default function Budgets() {
     }
   }, [category]);
 
-  let monthNames = [
+  const monthNames = [
     "Jan",
     "Feb",
     "March",
@@ -182,7 +182,7 @@ export default function Budgets() {
               title="hello"></BudgetModal>
           )}
 
-          {budget?.map((bud: IBudgets, idx: number) => {
+          {budget?.map((bud: IBudgets) => {
             const transactionPercat = transactions?.filter(
               (item) => item.category === bud.category
             );

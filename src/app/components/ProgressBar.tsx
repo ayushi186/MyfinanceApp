@@ -1,6 +1,5 @@
-import { type } from "os";
 import React from "react";
-import { styled, Styled } from "styled-components";
+import { styled } from "styled-components";
 export const ContainerStyles = styled.div<{
   height: number;
   br: boolean;

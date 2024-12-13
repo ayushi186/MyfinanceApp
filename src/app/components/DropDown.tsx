@@ -11,7 +11,7 @@ export default function DropDown({ id, options }: Iprop) {
         <option value="alltransactions">all transactions</option>
         {options?.map((opt: string, idx: number) => {
           return (
-            <option value={opt} id={idx.toString()}>
+            <option value={opt} id={idx.toString()} key={idx}>
               {opt}
             </option>
           );

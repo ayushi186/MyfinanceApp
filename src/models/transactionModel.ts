@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const transactionModel = new mongoose.Schema({
+const transactionModel = new Schema({
     username: {
        type: String,
        required:true,

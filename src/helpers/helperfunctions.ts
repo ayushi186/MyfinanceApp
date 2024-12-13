@@ -1,4 +1,4 @@
-let monthNames = [
+const monthNames = [
     "Jan",
     "Feb",
     "March",
@@ -93,7 +93,7 @@ export const sortByAmount = ( data: transaction[]| undefined , direction : strin
     }
 }
 
-export const filter = <arrayType>(arr : arrayType[], filterby : string, typei : string) => {
+export const filter = <arrayType>(arr : arrayType[], filterby : string) => {
     const filterbyvar = filterby
     return arr.filter((item: any )=> item?.filterbyvar === filterbyvar )
 

@@ -1,20 +1,16 @@
 "use client";
 
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useBudget, useLoader } from "../customhooks/hooks";
+import { useLoader } from "../customhooks/hooks";
 
 type IModal = {
-  onClose: Function;
+  onClose: () => void;
   username: string | undefined;
   //children: React.ReactNode;
-  title: string;
+  title?: string;
 };
 
 type IBudgets = {
@@ -24,7 +20,7 @@ type IBudgets = {
   theme: string;
 };
 
-export default function BudgetModal({ onClose, title, username }: IModal) {
+export default function BudgetModal({ onClose, username }: IModal) {
   const { showLoader, hideLoader } = useLoader();
   const handleCloseClick = (e) => {
     e.preventDefault();
@@ -54,16 +50,6 @@ export default function BudgetModal({ onClose, title, username }: IModal) {
     },
   });
 
-  const SaveBudget = async () => {
-    try {
-      const res = await axios.post("/api/budgets/addbudget", budget);
-      console.log("budgetres", res);
-    } catch (error: any) {
-      toast.error(error.response.data.error);
-    } finally {
-      handleCloseClick;
-    }
-  };
   return (
     <>
       <Toaster></Toaster>
@@ -122,7 +108,4 @@ export default function BudgetModal({ onClose, title, username }: IModal) {
       </div>
     </>
   );
-}
-function useBudgetsMutation() {
-  throw new Error("Function not implemented.");
 }

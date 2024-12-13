@@ -1,10 +1,10 @@
 import axios from "axios";
-import { resolve } from "path/win32";
+
 import { SyntheticEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 type IModal = {
-  onClose: Function;
+  onClose: () => void;
   username: string | undefined;
   //children: React.ReactNode;
   potId: string | undefined;
@@ -18,7 +18,7 @@ export default function AddMoneyModal({ onClose, username, potId }: IModal) {
 
   useEffect(() => {
     const getPot = async (id: string | undefined) => {
-      const res = await axios
+      await axios
         .get(`/api/pots/${id}`)
         .then((res) => setPot(res?.data?.data[0]));
     };
@@ -35,8 +35,8 @@ export default function AddMoneyModal({ onClose, username, potId }: IModal) {
   });
   const AddMoney = async (id: string | undefined, e: SyntheticEvent) => {
     try {
-      const res = await axios.patch(`/api/pots/${id}`, pot);
-      console.log("potupdate", res);
+      await axios.patch(`/api/pots/${id}`, pot);
+
       handleCloseClick(e);
     } catch (error: any) {
       toast.error(error.response.data.error);

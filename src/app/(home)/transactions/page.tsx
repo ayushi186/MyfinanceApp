@@ -1,6 +1,6 @@
 //import { promises as fs } from "fs";
 "use client";
-import DropDown from "@/app/components/DropDown";
+
 import data from "@/app/data.json";
 import {
   dateCalculator,
@@ -8,9 +8,7 @@ import {
   sortByDate,
   sortBYName,
 } from "@/helpers/helperfunctions";
-import { SyntheticEvent, useEffect, useState } from "react";
-import Select from "react-select";
-import { start } from "repl";
+import { useEffect, useState } from "react";
 
 export type transaction = {
   amount: number;
@@ -21,10 +19,10 @@ export type transaction = {
   recurring: boolean;
 };
 
-type Icategory = {
-  value: string | undefined | null;
-  label: string | undefined | null;
-};
+// type Icategory = {
+//   value: string | undefined | null;
+//   label: string | undefined | null;
+// };
 
 export default function Page() {
   const [transactions, setTransactions] = useState<transaction[] | undefined>();
@@ -49,7 +47,7 @@ export default function Page() {
   useEffect(() => {
     if (transactions && !dropdownflag) {
       const getcategories = transactions.map(
-        (item: transaction, odx: number) => item.category
+        (item: transaction) => item.category
       );
       if (getcategories) {
         const uniqueCategories = [...new Set(getcategories)];
@@ -65,12 +63,11 @@ export default function Page() {
   const startIndex = lastIndex - recordPerPage;
   const records = filteredTrans?.slice(startIndex, lastIndex);
   const numbers = Array.from(Array((nPage ?? 0) + 1).keys()).slice(1);
-  const [searchProduct, setSearchProduct] = useState<String>();
-  const [selectedCategory, setSelectedCategory] = useState<any>();
+  // const [searchProduct, setSearchProduct] = useState<String>();
+  // const [selectedCategory, setSelectedCategory] = useState<any>();
   const sortingOptions = ["Oldest", " A to Z", "Z to A", "Highest", "Lowest"];
 
   const sortingSelected = (value: string, filteredTrans: transaction[]) => {
-     
     if (value === "Latest") {
       const unsortedarr = [...filteredTrans];
       const sortedarray = sortByDate(unsortedarr, "ascending");
@@ -127,7 +124,7 @@ export default function Page() {
   };
 
   const searchTransaction = (value: string) => {
-    setSearchProduct(value);
+    // setSearchProduct(value);
     if (value !== "") {
       const list = transactions?.filter((i: transaction) =>
         i.name.toLowerCase().includes(value)
@@ -225,7 +222,7 @@ export default function Page() {
           </div>
 
           {records?.map((trans: transaction, idx: number) => {
-            let amountabs =
+            const amountabs =
               trans.amount < 0
                 ? `- $${Math.abs(trans.amount)}`
                 : `+$${trans.amount}`;

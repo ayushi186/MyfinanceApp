@@ -1,7 +1,7 @@
 import { getUsernameFormToken} from "@/helpers/getUsernameFromToken";
 import { NextRequest, NextResponse } from "next/server";
 import {connect} from '@/dbConfig/dbConfig'
-import User from "@/models/userModel";
+
 import Budget from "@/models/newbudgets";
 
 connect();

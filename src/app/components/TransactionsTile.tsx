@@ -1,7 +1,7 @@
 import { dateCalculator } from "@/helpers/helperfunctions";
-import { useEffect, useState } from "react";
+
 import { v4 } from "uuid";
-import chartdata from "@/app/data.json";
+
 import { useSelector } from "react-redux";
 
 export default function TransactionsTile() {
@@ -19,7 +19,7 @@ export default function TransactionsTile() {
   return (
     <div key={v4()} className="p-5">
       {trs?.slice(0, 4)?.map((trans: Itrans) => {
-        let amountabs =
+        const amountabs =
           trans.amount < 0
             ? `- $${Math.abs(trans.amount)}`
             : ` $${trans.amount}`;

@@ -18,6 +18,10 @@ export async function GET(request: NextRequest) {
         })
         
     } catch (error: any) {
+        return NextResponse.json({
+            message: "some error message"
+            
+        })
         
     }
 }

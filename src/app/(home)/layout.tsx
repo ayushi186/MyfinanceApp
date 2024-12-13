@@ -14,7 +14,7 @@ import {
   RecurringBills,
   MinimiseNav,
 } from "../components/SVG";
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { useLoader } from "../customhooks/hooks";
 
 type IPageType = {
@@ -103,7 +103,7 @@ export default function NavBar({
   const [minimiseMenu, setMinimiseMenu] = useState<boolean>(false);
   const logout = async () => {
     try {
-      const res = await axios.get("/api/users/logout");
+      await axios.get("/api/users/logout");
     } catch (error: any) {
       toast.error(error.message);
     } finally {

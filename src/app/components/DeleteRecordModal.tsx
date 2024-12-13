@@ -5,18 +5,18 @@ import { useLoader } from "../customhooks/hooks";
 import toast from "react-hot-toast";
 
 type IModal = {
-  onClose: Function;
+  onClose: () => void;
 
   //children: React.ReactNode;
   id: string | undefined;
 };
 
-type IPots = {
-  name: string;
-  target: number;
-  total: number;
-  theme: string;
-};
+// type IPots = {
+//   name: string;
+//   target: number;
+//   total: number;
+//   theme: string;
+// };
 
 export default function DeleteRecordModal({ onClose, id }: IModal) {
   const { showLoader, hideLoader } = useLoader();
@@ -24,12 +24,6 @@ export default function DeleteRecordModal({ onClose, id }: IModal) {
 
   const handleCloseClick = () => {
     onClose();
-  };
-  const deletePot = async (id: string | undefined) => {
-    const res = await axios
-      .delete(`/api/pots/${id}`)
-      .then((res) => console.log("potspatch", res));
-    handleCloseClick();
   };
 
   const { mutate, isError } = useMutation({

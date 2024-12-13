@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import React from "react";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Public_Sans } from "@next/font/google";
 import StoreProvider from "@/app/store/StoreProvider";
 import QueryProvider from "./components/QueryProvider";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ClerkProvider } from "@clerk/nextjs";
+
 import { LoaderProvider } from "./components/LoaderProvider";
 
 const geistSans = localFont({
@@ -13,11 +13,7 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
 const publicSans = Public_Sans({
   variable: "--font-publicsans",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],

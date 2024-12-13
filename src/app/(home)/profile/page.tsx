@@ -11,12 +11,7 @@ import { v4 } from "uuid";
 
 import TransactionsTile from "@/app/components/TransactionsTile";
 
-import {
-  useBudget,
-  usePots,
-  useTransactions,
-  useUserId,
-} from "@/app/customhooks/hooks";
+import { useBudget, usePots, useTransactions } from "@/app/customhooks/hooks";
 import { Icategory } from "../budgets/page";
 
 const ColoredLabels = styled.div<{ bgcolor: string }>`
@@ -51,12 +46,12 @@ export type Itrans = {
 
 const ProfilePage = () => {
   const [savedPots, setSavedPots] = useState<number>();
-  const [recrringTrans, setRecrringTrans] = useState<Itrans[] | undefined>();
+  // const [recrringTrans, setRecrringTrans] = useState<Itrans[] | undefined>();
   const [totalPaid, setTotalPaid] = useState<Itrans[] | undefined>();
   const [sumtotalPaid, setSumTotalPaid] = useState<number>();
 
   const category: Icategory[] | undefined = [];
-  const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
+  // const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
 
@@ -65,9 +60,9 @@ const ProfilePage = () => {
 
   const { data: pots } = usePots(chartData);
   useEffect(() => {
-    setRecrringTrans(
-      chartdata?.transactions.filter((i) => i.recurring === true)
-    );
+    // setRecrringTrans(
+    //   chartdata?.transactions.filter((i) => i.recurring === true)
+    // );
     setTotalPaid(
       chartdata?.transactions.filter(
         (i) => i.recurring === true && i.amount < 0
@@ -118,22 +113,22 @@ const ProfilePage = () => {
           sum: sum,
         });
       });
-      if (filtereddata) {
-        setCategotySpent(category);
-      }
+      // if (filtereddata) {
+      //   setCategotySpent(category);
+      // }
     }
   }, [chartData, transactions]);
 
   useEffect(() => {
     if (category) {
-      let spentsum: number | undefined = category
+      const spentsum: number | undefined = category
         ?.map((item: Icategory) => item.sum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (spentsum) {
         setspentsum(spentsum);
       }
 
-      let maximumsum: number = category
+      const maximumsum: number = category
         ?.map((item: Icategory) => item.maximum)
         ?.reduce((prev, curre) => (prev ?? 0) + (curre ?? 0), 0);
       if (maximumsum) {
