@@ -98,7 +98,7 @@ const ProfilePage = () => {
   }, [totalPaid]);
   useEffect(() => {
     if (transactions != undefined && chartData != undefined) {
-      const filtereddata = chartData?.map((bud: IBudgets) => {
+      chartData?.map((bud: IBudgets) => {
         const transactionPercat = transactions?.filter(
           (item) => item.category === bud.category
         );

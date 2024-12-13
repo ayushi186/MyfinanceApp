@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { useLoader } from "../customhooks/hooks";
 
 type IModal = {

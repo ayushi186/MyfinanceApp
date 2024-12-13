@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -18,13 +18,10 @@ const LoginPage = () => {
     showLoader("Signing In..");
     try {
       await axios.post("/api/users/login", user);
-
-      // toast.success("Successfully logedin!");
-
       router.push("/profile");
     } catch (error: any) {
       hideLoader();
-      console.log("login cfailed", error);
+
       toast.error(error.response.data.error);
     } finally {
       hideLoader();

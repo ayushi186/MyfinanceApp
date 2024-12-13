@@ -32,7 +32,7 @@ export default function DeleteRecordModal({ onClose, id }: IModal) {
     },
 
     onMutate: () => {
-      isError === false ? showLoader("deleting pot") : hideLoader();
+      showLoader("deleting pot");
     },
 
     onSuccess: () => {

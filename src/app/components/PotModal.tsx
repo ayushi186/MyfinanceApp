@@ -36,7 +36,7 @@ export default function PotModal({ onClose, username }: IModal) {
     username: username,
   });
 
-  const { mutate, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (pot: IPots) => {
       return axios.post("/api/pots/addPots", pot);
     },

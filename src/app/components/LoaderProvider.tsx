@@ -1,8 +1,8 @@
 "use client";
 import React, { ReactNode, createContext, useState } from "react";
 
-type LoaderContext = {
-  showLoader: (message: string) => void;
+type ILoaderContext = {
+  showLoader: (message?: string) => void;
   hideLoader: () => void;
 };
 
@@ -10,7 +10,7 @@ type LoaderContextProvider = {
   children: ReactNode;
 };
 
-export const LoaderContext = createContext<LoaderContext | undefined>(
+export const LoaderContext = createContext<ILoaderContext | undefined>(
   undefined
 );
 
@@ -20,7 +20,7 @@ export const LoaderProvider: React.FC<LoaderContextProvider> = ({
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [loaderMessage, setLoaderMessage] = useState<string | undefined>();
 
-  const contextValue: LoaderContext = {
+  const contextValue: ILoaderContext = {
     showLoader: (message) => {
       setLoaderMessage(message);
       setIsVisible(true);
@@ -38,11 +38,11 @@ export const LoaderProvider: React.FC<LoaderContextProvider> = ({
   );
 };
 
-type Loader = {
+type ILoader = {
   message: string | undefined;
 };
 
-export const Loader: React.FC<Loader> = ({ message }) => {
+export const Loader: React.FC<ILoader> = ({ message }) => {
   return (
     <div className="loader">
       <span className="spinner"></span>
