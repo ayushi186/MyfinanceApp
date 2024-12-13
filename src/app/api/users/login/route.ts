@@ -10,7 +10,7 @@ connect();
 export async function  POST (request: NextRequest) {
    
 try {
-    debugger;
+     
    
     const reqBody = await request.json();
     const { email, password} = reqBody;
