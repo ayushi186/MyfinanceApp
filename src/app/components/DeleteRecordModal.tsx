@@ -26,7 +26,7 @@ export default function DeleteRecordModal({ onClose, id }: IModal) {
     onClose();
   };
 
-  const { mutate, isError } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (id: string | undefined) => {
       return axios.delete(`/api/pots/${id}`);
     },
