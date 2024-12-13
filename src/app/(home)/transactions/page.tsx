@@ -70,7 +70,7 @@ export default function Page() {
   const sortingOptions = ["Oldest", " A to Z", "Z to A", "Highest", "Lowest"];
 
   const sortingSelected = (value: string, filteredTrans: transaction[]) => {
-    debugger;
+     
     if (value === "Latest") {
       const unsortedarr = [...filteredTrans];
       const sortedarray = sortByDate(unsortedarr, "ascending");
