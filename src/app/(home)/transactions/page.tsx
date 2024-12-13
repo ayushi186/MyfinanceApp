@@ -69,7 +69,10 @@ export default function Page() {
   // const [selectedCategory, setSelectedCategory] = useState<any>();
   const sortingOptions = ["Oldest", " A to Z", "Z to A", "Highest", "Lowest"];
 
-  const sortingSelected = (value: string, filteredTrans: transaction[]) => {
+  const sortingSelected = (
+    value: string,
+    filteredTrans: transaction[] | undefined
+  ) => {
     if (value === "Latest") {
       const unsortedarr = [...filteredTrans];
       const sortedarray: transaction[] | undefined = sortByDate(
