@@ -1,5 +1,5 @@
 import { NextRequest} from "next/server";
-// @ts-ignore
+// @ts-expect-error
 import jwt from "jsonwebtoken"
 
 export const getDataFormToken = (request: NextRequest) => {
