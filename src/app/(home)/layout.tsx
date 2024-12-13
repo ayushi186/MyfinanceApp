@@ -105,7 +105,7 @@ export default function NavBar({
 
   const [minimiseMenu, setMinimiseMenu] = useState<boolean>(false);
   const logout = async () => {
-    debugger;
+    
     try {
       const res = await axios.get("/api/users/logout");
     } catch (error: any) {
@@ -143,7 +143,7 @@ export default function NavBar({
                 <MinimiseNav></MinimiseNav>
                 <button
                   onClick={() => {
-                    debugger;
+                    
                     setMinimiseMenu(!minimiseMenu);
                   }}
                   className="p-2 h-100">
