@@ -25,7 +25,9 @@ export type transaction = {
 // };
 
 export default function Page() {
-  const [transactions, setTransactions] = useState<transaction[] | undefined>();
+  const [transactions, setTransactions] = useState<transaction[] | undefined>(
+    []
+  );
   const [categories, setCategories] = useState<string[]>();
   const [nPage, setNPage] = useState<any>();
   const [dropdownflag, setDropDownFlag] = useState<boolean>(false);
@@ -70,40 +72,58 @@ export default function Page() {
   const sortingSelected = (value: string, filteredTrans: transaction[]) => {
     if (value === "Latest") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortByDate(unsortedarr, "ascending");
-      const newsortedarray = [...sortedarray];
+      const sortedarray: transaction[] | undefined = sortByDate(
+        unsortedarr,
+        "ascending"
+      );
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
 
     if (value === "Oldest") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortByDate(unsortedarr, "descending");
+      const sortedarray: transaction[] | undefined = sortByDate(
+        unsortedarr,
+        "descending"
+      );
 
-      const newsortedarray = [...sortedarray];
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
     if (value === " A to Z") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortBYName(unsortedarr, "ascending");
-      const newsortedarray = [...sortedarray];
+      const sortedarray: transaction[] | undefined = sortBYName(
+        unsortedarr,
+        "ascending"
+      );
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
     if (value === "Z to A") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortBYName(unsortedarr, "descending");
-      const newsortedarray = [...sortedarray];
+      const sortedarray: transaction[] | undefined = sortBYName(
+        unsortedarr,
+        "descending"
+      );
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
     if (value === "Highest") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortByAmount(unsortedarr, "descending");
-      const newsortedarray = [...sortedarray];
+      const sortedarray: transaction[] | undefined = sortByAmount(
+        unsortedarr,
+        "descending"
+      );
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
     if (value === "Lowest") {
       const unsortedarr = [...filteredTrans];
-      const sortedarray = sortByAmount(unsortedarr, "ascending");
-      const newsortedarray = [...sortedarray];
+      const sortedarray: transaction[] | undefined = sortByAmount(
+        unsortedarr,
+        "ascending"
+      );
+      const newsortedarray: transaction[] | undefined = sortedarray;
       setFilteredTrans(newsortedarray);
     }
   };
