@@ -6,7 +6,7 @@ import User from "@/models/userModel";
 connect();
 
 export async function GET(request: NextRequest) {
-    debugger
+     
     try {
         const userId = await getDataFormToken(request)
         console.log("userId", userId)
