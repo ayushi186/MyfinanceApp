@@ -82,7 +82,7 @@ export const DELETE = async(request: NextRequest, context: {params: any}) =>{
         );
         if(deletedPot){
             console.log("deletedPOt", deletedPot)
-            debugger;
+             
             return new NextResponse(
                 JSON.stringify({message: "pot deleted" , pot: deletedPot}),
                 { status: 200},
