@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"
 
 export const getDataFormToken = (request: NextRequest) => {
-    debugger;
+ 
     try {
         console.log("NextRequest", request)
         const encodetoken =  request.cookies.get("token" )?.value ||''
