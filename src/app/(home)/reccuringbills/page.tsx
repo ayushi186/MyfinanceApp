@@ -1,5 +1,8 @@
 "use client";
-import { useRecurringTransactions } from "@/app/customhooks/hooks";
+import {
+  useRecurringTransactions,
+  useTotalSumRecTrans,
+} from "@/app/customhooks/hooks";
 
 import styled from "styled-components";
 import { Itrans } from "../profile/page";
@@ -18,7 +21,10 @@ const RecurringBillsCard = styled.div`
 
 export default function ReccuringBills() {
   const { data: transaction } = useRecurringTransactions();
-  // const { data: totalBillSpent } = useTotalSumRecTrans();
+  const { data: totalBillSpent } = useTotalSumRecTrans();
+
+  console.log("transaction", transaction);
+  console.log("bill spent ", totalBillSpent);
 
   return (
     <>
@@ -31,7 +37,7 @@ export default function ReccuringBills() {
               </div>
               <div>
                 <div>Total Bills</div>
-                {/* <div>${Math.abs(totalBillSpent)}</div> */}
+                <div></div>
               </div>
             </RecurringBillsCard>
           </div>
