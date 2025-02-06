@@ -22,7 +22,7 @@ export type IPots = {
 
 export default function Pots() {
   // const [pots, setPots] = useState<IPots[] | undefined>();
-  const [showModal, setShowModal] = useState<Boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [potId, setPotId] = useState<string | undefined>();
   const [showMoneyModal, setMoneyModal] = useState<boolean>();

@@ -5,7 +5,6 @@ import ProgressBar from "@/app/components/ProgressBar";
 import BudgetModal from "@/app/components/BudgetModal";
 import { StyledBullet } from "@/types";
 import DonutChart from "@/app/components/DonutChart";
-
 import { useBudget, useTransactions, useUserId } from "@/app/customhooks/hooks";
 import DeleteRecordModal from "@/app/components/DeleteRecordModal";
 
@@ -32,9 +31,9 @@ export interface Icategory {
 }
 
 export default function Budgets() {
-  const [showModal, setShowModal] = useState<Boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  let category: Icategory[] | undefined = [];
+  const category: Icategory[] | undefined = [];
   const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
