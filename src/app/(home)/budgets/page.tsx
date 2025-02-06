@@ -7,6 +7,7 @@ import { StyledBullet } from "@/types";
 import DonutChart from "@/app/components/DonutChart";
 
 import { useBudget, useTransactions, useUserId } from "@/app/customhooks/hooks";
+import DeleteRecordModal from "@/app/components/DeleteRecordModal";
 
 type IBudgets = {
   _id: string;
@@ -31,22 +32,26 @@ export interface Icategory {
 }
 
 export default function Budgets() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<Boolean>(false);
 
-  const category: Icategory[] | undefined = [];
+  let category: Icategory[] | undefined = [];
   const [categoryspent, setCategotySpent] = useState<Icategory[] | undefined>();
   const [spentsum, setspentsum] = useState<number | undefined>();
   const [maximumsum, setmaximumsum] = useState<number | undefined>();
 
   const { data: username } = useUserId();
-
   const { data: transactions } = useTransactions();
-
   const { data: budget } = useBudget();
+  const [showmenu, setShowMenu] = useState<boolean>(false);
+  const [budgetId, setbudgetId] = useState<string>();
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [budgetName, setBudgetName] = useState<string>();
+
+  useEffect(() => {}, [transactions]);
 
   useEffect(() => {
-    if (transactions != undefined && budget != undefined) {
-      const filtereddata = budget?.map((bud: IBudgets) => {
+    if (budget != undefined) {
+      budget?.map((bud: IBudgets) => {
         const transactionPercat = transactions?.filter(
           (item) => item.category === bud.category
         );
@@ -54,18 +59,22 @@ export default function Budgets() {
           ?.map((item) => item.amount)
           ?.reduce((prev, curr) => prev + curr, 0);
 
-        category.push({
-          theme: bud.theme,
-          category: bud.category,
-          maximum: bud.maximum,
-          sum: sum,
-        });
-      });
-      if (filtereddata) {
+        const checkDuplicate = category.find(
+          (item: any) => item.category === bud.category
+        );
+        if (!checkDuplicate) {
+          category.push({
+            theme: bud.theme,
+            category: bud.category,
+            maximum: bud.maximum,
+            sum: sum,
+          });
+        }
+
         setCategotySpent(category);
-      }
+      });
     }
-  }, [budget, transactions]);
+  }, [budget]);
 
   useEffect(() => {
     if (category) {
@@ -110,14 +119,14 @@ export default function Budgets() {
           + Add New Budget
         </button>
       </div>
-      <div className="flex felx-col flex-wrap">
-        <div className="flex-1">
+      <div className="flex felx-col flex-wrap justify-between">
+        <div className="w-[45%] max-h-[600px] bg-white pt-5 rounded-2xl mt-5">
           <div
             style={{ height: "400px", width: "500px" }}
-            className="flex-1 bg-white  rounded-2xl ml-2 mr-2 pt-4 mt-5">
+            className="chart-wrapper">
             <div
               style={{ height: "350px", width: "500px", position: "relative" }}
-              className="flex-1   ">
+              className=" ">
               <DonutChart
                 chartdata={categoryspent}
                 summarydata={false}></DonutChart>
@@ -130,7 +139,6 @@ export default function Budgets() {
                   textAlign: "center",
                   marginTop: "-10px",
                   fontSize: "12px",
-                  //lineHeight: "20px",
                 }}>
                 <div className="text-gray-900 textpresetBold1 ">
                   ${Math.abs(spentsum ?? 0)}
@@ -139,9 +147,7 @@ export default function Budgets() {
                   of ${maximumsum}
                 </div>
               </div>
-              <div
-                className="flex flex-col bg-white pb-5"
-                style={{ width: "100%" }}>
+              <div className="flex flex-col  pb-5">
                 <div className="text-gray-900 textpresetBold2 pl-5 pt-5">
                   Spending Summary
                 </div>
@@ -174,12 +180,26 @@ export default function Budgets() {
             </div>
           </div>
         </div>
-        <div className="flex-1 flex flex-col items-end">
+        <div className=" w-[45%] flex flex-col items-end">
           {showModal && (
             <BudgetModal
-              onClose={() => setShowModal(false)}
+              onClose={() => {
+                setShowModal(false);
+                setbudgetId(undefined);
+              }}
               username={username}
-              title="hello"></BudgetModal>
+              title="hello"
+              type={showmenu ? "Edit" : "Create"}
+              id={showModal ? budgetId : undefined}></BudgetModal>
+          )}
+          {showDeleteModal && (
+            <DeleteRecordModal
+              onClose={() => {
+                setShowDeleteModal(false);
+              }}
+              id={budgetId}
+              type={"budget"}
+              name={budgetName}></DeleteRecordModal>
           )}
 
           {budget?.map((bud: IBudgets) => {
@@ -192,17 +212,55 @@ export default function Budgets() {
 
             const width = ((bud.maximum + (sum ?? 0)) / bud.maximum) * 100;
             const remaining = bud.maximum + (sum ?? 0);
+            const key = bud._id;
 
             return (
               <React.Fragment key={bud._id}>
-                <div className="bg-white m-5 p-10 rounded-2xl">
-                  <div className="flex items-center pb-5">
-                    <StyledBullet
-                      height={15}
-                      width={15}
-                      br={true}
-                      fillcolor={bud.theme}></StyledBullet>
-                    <div>{bud.category}</div>
+                <div className="bg-white p-5 rounded-2xl mt-5">
+                  <div className="flex items-center pb-5 justify-between">
+                    <div className="flex">
+                      <StyledBullet
+                        height={15}
+                        width={15}
+                        br={true}
+                        fillcolor={bud.theme}></StyledBullet>
+                      <div>{bud.category}</div>
+                    </div>
+                    <div className="relative">
+                      <div
+                        onClick={() => {
+                          setbudgetId(bud._id);
+                          setShowMenu(!showmenu);
+                        }}
+                        className="cursor-pointer">
+                        {showmenu && key === budgetId ? "x" : "..."}
+                      </div>
+
+                      {showmenu && key === budgetId ? (
+                        <div className="absolute top-[] left-[-15px] cursor-pointer background-white w-[200px]">
+                          <ul className="flex flex-col">
+                            <li
+                              onClick={() => {
+                                // setbudgetId(bud._id);
+                                console.log("cat", bud.category);
+                                setShowModal(true);
+                              }}>
+                              Edit
+                            </li>
+                            <li
+                              onClick={() => {
+                                console.log("cat", bud.category);
+                                setShowDeleteModal(true);
+                                setBudgetName(bud.category);
+                              }}>
+                              Delete
+                            </li>
+                          </ul>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
                   <div className="text-gray-500 textpresetRegular1  mb-3">
                     Maximum of ${bud.maximum}

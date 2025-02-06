@@ -13,6 +13,7 @@ import TransactionsTile from "@/app/components/TransactionsTile";
 
 import { useBudget, usePots, useTransactions } from "@/app/customhooks/hooks";
 import { Icategory } from "../budgets/page";
+import { isMobile } from "react-device-detect";
 
 const ColoredLabels = styled.div<{ bgcolor: string }>`
   height: 50px;
@@ -60,9 +61,6 @@ const ProfilePage = () => {
 
   const { data: pots } = usePots(chartData);
   useEffect(() => {
-    // setRecrringTrans(
-    //   chartdata?.transactions.filter((i) => i.recurring === true)
-    // );
     setTotalPaid(
       chartdata?.transactions.filter(
         (i) => i.recurring === true && i.amount < 0
@@ -105,17 +103,18 @@ const ProfilePage = () => {
         const sum: number | undefined = transactionPercat
           ?.map((item) => item.amount)
           ?.reduce((prev, curr) => prev + curr, 0);
-
-        category.push({
-          theme: bud.theme,
-          category: bud.category,
-          maximum: bud.maximum,
-          sum: sum,
-        });
+        const checkDuplicate = category.find(
+          (item: any) => item.category === bud.category
+        );
+        if (!checkDuplicate) {
+          category.push({
+            theme: bud.theme,
+            category: bud.category,
+            maximum: bud.maximum,
+            sum: sum,
+          });
+        }
       });
-      // if (filtereddata) {
-      //   setCategotySpent(category);
-      // }
     }
   }, [chartData, transactions]);
 
@@ -144,62 +143,83 @@ const ProfilePage = () => {
           <Toaster />
         </div>
 
-        <div>Overview</div>
-        <div className="w-full border-black flex flex-wrap">
+        <div className="textpresetBold1 m-4 text-grey900">Overview</div>
+        <div className="w-full border-black flex flex-wrap m-4">
           <div className="overview-tiles w-[32.33%] mr-[1%]">
             <OverviewTiles
               name="Current Balance"
               bgcolor="black"
+              itemalign="left"
+              classname="textpresetRegular1"
+              classnameheading="textpresetBold1"
+              width={110}
               amount={4836.0}></OverviewTiles>
           </div>
           <div className=" overview-tiles w-[32.33%] mr-[1%]">
             <OverviewTiles
               name="Income"
               bgcolor="white"
+              itemalign="left"
+              classname="textpresetRegular1"
+              classnameheading="textpresetBold1"
+              width={110}
               amount={4836.0}></OverviewTiles>
           </div>
           <div className=" overview-tiles w-[32.33%]">
             <OverviewTiles
               name="Expenses"
               bgcolor="white"
+              itemalign="left"
+              classname="textpresetRegular1"
+              classnameheading="textpresetBold1"
+              width={110}
               amount={4836.0}></OverviewTiles>
           </div>
         </div>
         <div className="flex flex-wrap w-[100%]" key={v4()}>
-          <div key={v4()} className="w-[50%]">
-            <div className="flex-1 flex  bg-white flex-col m-4 rounded-2xl pots-wrapper h-[300px]">
-              <div>Pots</div>
-              <div className="flex-1 flex flex-wrap h-[300px] " key={v4()}>
-                <div className=" overview-tiles w-[45%] mr-[5%]">
-                  <OverviewTiles
-                    name="Total Saved"
-                    bgcolor="#F8F4F0"
-                    amount={savedPots}></OverviewTiles>
-                </div>
-                <div
-                  key={v4()}
-                  className="flex flex-row  flex-wrap w-[50%] potsLabel-wrapper"
-                  style={{ height: "auto", maxHeight: "auto" }}>
-                  {pots?.map((item: IPots, idx: number) => {
-                    return (
-                      <div className="flex" key={v4()}>
-                        <ColoredLabels
-                          className="flex-1"
-                          bgcolor={item.theme}
-                          key={idx}></ColoredLabels>
-                        <div className="flex flex-col flex-1">
-                          <div>{item.name}</div>
-                          <div>${item.total}</div>
+          <div key={v4()} className={`w-${isMobile ? "[100%]" : "[50%]"}`}>
+            <div className="flex-1 flex  bg-white flex-col m-4 rounded-2xl pots-wrapper h-[400px] p-[5%]">
+              <div className="textpresetBold2 mb-[3%] text-grey900">Pots</div>
+              {savedPots ? (
+                <div className="flex-1 flex flex-wrap h-[400px] " key={v4()}>
+                  <div className="overview-tiles w-[45%] mr-[5%]">
+                    <OverviewTiles
+                      name="Total Saved"
+                      bgcolor="#F8F4F0"
+                      amount={savedPots}></OverviewTiles>
+                  </div>
+                  <div
+                    key={v4()}
+                    className="flex flex-row  flex-wrap w-[50%] potsLabel-wrapper"
+                    style={{ height: "auto", maxHeight: "auto" }}>
+                    {pots?.map((item: IPots, idx: number) => {
+                      return (
+                        <div className="flex" key={v4()}>
+                          <ColoredLabels
+                            className="flex-1"
+                            bgcolor={item.theme}
+                            key={idx}></ColoredLabels>
+                          <div className="flex flex-col flex-1">
+                            <div>{item.name}</div>
+                            <div>${item.total}</div>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex-1 flex flex-wrap h-[300px] " key={v4()}>
+                  <div className=" overview-tiles w-[100%] m-[5%]">
+                    No pots available .. please create pots under Pots page to
+                    be visible here
+                  </div>
+                </div>
+              )}
             </div>
             <div className="bg-white m-4 rounded-2xl" key={v4()}>
               <div className="flex justify-between p-5" key={v4()}>
-                <div>Transactions</div>
+                <div className="textpresetBold2">Transactions</div>
                 <div>See all</div>
               </div>
               <TransactionsTile></TransactionsTile>
@@ -220,12 +240,12 @@ const ProfilePage = () => {
               <div className=" doughnut-chart flex-1   m-4">
                 <div
                   style={{
-                    height: "350px",
-                    width: "500px",
+                    height: !isMobile ? "350px" : "200px",
+                    width: !isMobile ? "300px" : "300px",
                     position: "relative",
                   }}
-                  className="flex-1   ">
-                  <div>Budgets</div>
+                  className="flex-1">
+                  <div className="textpresetBold2">Budgets</div>
                   <DonutChart
                     chartdata={chartData}
                     summarydata={true}></DonutChart>
@@ -251,9 +271,10 @@ const ProfilePage = () => {
               </div>
             </div>
             <div
-              className="flex-1 bg-white  rounded-2xl m-4 p-5"
+              className="flex-1 bg-white  rounded-2xl m-4 p-5 "
               style={{ height: "100%" }}>
-              Recurring Bills
+              <div className="textpresetBold2">Recurring Bills</div>
+
               <div>
                 <RecurringBillTile
                   rightborder="green"

@@ -58,7 +58,7 @@ export const sortByDate = (data : transaction[]|undefined , direction : string )
 
 export const sortBYName = ( data : transaction[]| undefined , direction : string) =>{
    
-    console.log("data", data)
+   
     if(direction === "ascending"){
         const sortedarray = data?.sort((a: transaction,  b: transaction) => {
             return (a.name > b.name ? 1 : a.name < b.name ? -1 :0)
@@ -97,4 +97,14 @@ export const filter = <arrayType>(arr : arrayType[], filterby : string) => {
     const filterbyvar = filterby
     return arr.filter((item: any )=> item?.filterbyvar === filterbyvar )
 
+}
+
+export function initialize(item : any) {
+    if (!item.getAttribute("initialized")) {
+        item.setAttribute("initialized", true);
+        if (item.value == 1) item.value = 0;
+    }
+    if (item.value === "") {
+        item.removeAttribute("initialized");
+    }
 }

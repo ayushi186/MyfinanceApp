@@ -17,8 +17,7 @@ try {
    
     const reqBody = await request.json();
     const { email, password} = reqBody;
-    console.log(reqBody);
-    // check if user is already existing
+   
     const existingUser= await User.findOne({email})
     if(!existingUser) {
         return NextResponse.json({error: "User doesn't exist"}, {status: 400})

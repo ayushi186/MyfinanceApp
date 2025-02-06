@@ -10,39 +10,31 @@ import { useBudget, usePots, useUserId } from "@/app/customhooks/hooks";
 import DeleteRecordModal from "@/app/components/DeleteRecordModal";
 import { StyledBullet } from "@/types";
 
-type IPots = {
+export type IPots = {
   _id: string | undefined;
   name: string;
   target: number;
   total: number;
   theme: string;
+  width?: number | undefined;
+  remaining?: number | undefined;
 };
 
 export default function Pots() {
   // const [pots, setPots] = useState<IPots[] | undefined>();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<Boolean>(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
   const [potId, setPotId] = useState<string | undefined>();
   const [showMoneyModal, setMoneyModal] = useState<boolean>();
+  const [potDetails, setPotDetails] = useState<IPots | undefined>();
+  const [potName, setPotName] = useState<string>();
+  const [addSubtracttype, setAddSubtractType] = useState<string>();
 
   const { data: username } = useUserId();
 
   const { data: budgets } = useBudget();
 
   const { data: pots } = usePots(budgets);
-
-  // const EditPot = async (id: string) => {
-  //   const res = await axios
-  //     .patch(`/api/pots/${id}`)
-  //     .then((res) => console.log("potspatch", res));
-  // };
-
-  // const deletePot = async (id: string | undefined) => {
-  //   const res = await axios
-  //     .delete(`/api/pots/${id}`)
-  //     .then((res) => console.log("potspatch", res));
-  // };
 
   return (
     <div className="flex flex-col">
@@ -71,14 +63,17 @@ export default function Pots() {
           <AddMoneyModal
             onClose={() => setMoneyModal(false)}
             username={username}
-            potId={potId}></AddMoneyModal>
+            potdetails={potDetails}
+            type={addSubtracttype}></AddMoneyModal>
         )}
       </div>
       <div>
         {showConfirmationModal && (
           <DeleteRecordModal
             onClose={() => setShowConfirmationModal(false)}
-            id={potId}></DeleteRecordModal>
+            id={potId}
+            name={potName}
+            type="pot"></DeleteRecordModal>
         )}
       </div>
       <div className=" flex flex-wrap justify-between p-4" key={v4()}>
@@ -99,11 +94,12 @@ export default function Pots() {
 
                 <div
                   onClick={() => {
+                    setPotName(pot.name);
                     setPotId(pot._id);
                     setShowConfirmationModal(true);
                   }}
                   style={{ cursor: "pointer" }}>
-                  ...{" "}
+                  ...
                 </div>
               </div>
               <div className="flex justify-between pt-5 pb-5">
@@ -125,13 +121,38 @@ export default function Pots() {
               <div className="flex justify-between pb-5 ">
                 <button
                   onClick={() => {
+                    setAddSubtractType("add");
                     setPotId(pot._id);
                     setMoneyModal(true);
+                    setPotDetails({
+                      _id: pot._id,
+                      name: pot.name,
+                      theme: pot.theme,
+                      total: pot.total,
+                      target: pot.target,
+                      width: width,
+                      remaining: remaining,
+                    });
                   }}
                   className="w-[230px] h-[50px]  border rounded-lg bg-background hover:bg-white">
                   + Add Money
                 </button>
-                <button className="w-[230px] h-[50px] border rounded-lg bg-background hover:bg-white">
+                <button
+                  onClick={() => {
+                    setAddSubtractType("sub");
+                    setPotId(pot._id);
+                    setMoneyModal(true);
+                    setPotDetails({
+                      _id: pot._id,
+                      name: pot.name,
+                      theme: pot.theme,
+                      total: pot.total,
+                      target: pot.target,
+                      width: width,
+                      remaining: remaining,
+                    });
+                  }}
+                  className="w-[230px] h-[50px] border rounded-lg bg-background hover:bg-white">
                   Withdraw
                 </button>
               </div>

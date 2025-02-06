@@ -14,7 +14,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        grey300: "var(--font-grey-300)"
+        grey300: "var(--font-grey-300)",
+        grey900:"var(--font-grey-900)",
       },
       backgroundColor: {
         backgroundc:"var(--background)",

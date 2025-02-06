@@ -35,11 +35,11 @@ export const LabelStyles = styled.span`
   fontweight: "bold";
 `;
 type Props = {
-  bgcolor: string;
+  bgcolor: string | undefined;
   maximum: number | undefined;
   current: number | undefined;
-  width: number;
-  remaining: number;
+  width: number | undefined;
+  remaining: number | undefined;
   height: number;
   br: boolean;
 };
@@ -52,6 +52,7 @@ const ProgressBar = ({
   height,
   br,
 }: Props) => {
+  console.log(remaining, current);
   return (
     <>
       <ContainerStyles height={height} br={br}>

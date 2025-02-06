@@ -12,7 +12,7 @@ const RecurringBillsCard = styled.div`
   flex-direction: column;
   justify-content: space-around;
   height: 200px;
-  width: 60%;
+  width: 100%;
   background-color: black;
   border-radius: 10px;
   color: white;
@@ -23,14 +23,11 @@ export default function ReccuringBills() {
   const { data: transaction } = useRecurringTransactions();
   const { data: totalBillSpent } = useTotalSumRecTrans();
 
-  console.log("transaction", transaction);
-  console.log("bill spent ", totalBillSpent);
-
   return (
     <>
-      <div className="flex  justify-between">
-        <div className="w-[50%] m-10">
-          <div>
+      <div className="flex  justify-between mt-[5rem] m-[20px]">
+        <div className="w-[30%] ">
+          <div className="p-[10px]">
             <RecurringBillsCard>
               <div>
                 <img src="images/RecurringBillsIcon.svg" />
@@ -43,9 +40,9 @@ export default function ReccuringBills() {
           </div>
           <div> summary</div>
         </div>
-        <div>
-          <div className="flex">
-            <div>Bill Title</div>
+        <div className="bg-white w-[68%] mt-[10px]">
+          <div className="flex w-[100%] justify-around">
+            <div className="text-left">Bill Title</div>
             <div> Due Date</div>
             <div>Amount </div>
           </div>
@@ -55,8 +52,8 @@ export default function ReccuringBills() {
               <div
                 key={idx}
                 style={{ borderBottom: "1px solid lightgrey" }}
-                className="flex justify-between items-center">
-                <div className="flex pt-[16px] pb-[16px] flex-1">
+                className="flex justify-around items-center">
+                <div className="flex pt-[16px] pb-[16px] ">
                   <img
                     className="rounded-2xl h-[30px] w-[30px]"
                     src={trans.avatar}
@@ -65,10 +62,9 @@ export default function ReccuringBills() {
                   <span className="pl-3">{trans.name}</span>
                 </div>
 
-                <div
-                  className="flex-2"
-                  style={{ color: trans.amount > 0 ? "green" : "" }}>
-                  {trans.amount}
+                <div>due date</div>
+                <div style={{ color: trans.amount > 0 ? "green" : "" }}>
+                  ${trans.amount}
                 </div>
               </div>
             );

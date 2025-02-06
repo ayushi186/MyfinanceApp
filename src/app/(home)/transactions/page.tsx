@@ -176,6 +176,7 @@ export default function Page() {
 
   return (
     <>
+      <div className="textpresetBold1 p-[30px] pb-[0px]">Transactions</div>
       <div className="flex flex-col bg-white m-[30px] p-[30px]">
         <div className="flex justify-between mb-10">
           <div className=" flex border border-gray-900 rounded-l  text-black ">
@@ -185,7 +186,6 @@ export default function Page() {
               name="search"
               type="text"
               onChange={(e) => {
-                //console.log("vabcdalue", e.target.value);
                 searchTransaction(e.target.value);
               }}
             />
@@ -281,8 +281,16 @@ export default function Page() {
         </div>
 
         <nav style={{ display: "flex" }} className="mt-20">
-          <ul style={{ display: "flex" }}>
-            <li style={{ listStyle: "none", padding: "4px" }}>
+          <ul style={{ display: "flex" }} className="w-[100%] justify-between">
+            <li
+              style={{
+                listStyle: "none",
+                padding: "10px",
+                textAlign: "center",
+                width: "10%",
+                border: "1px solid lightgrey",
+                borderRadius: "10%",
+              }}>
               <a
                 href="#"
                 className={currentPage <= 1 ? "anchor-disabled" : ""}
@@ -292,28 +300,40 @@ export default function Page() {
                 Prev
               </a>
             </li>
+            <ul className="flex w-[30%]">
+              {numbers?.map((i, idx) => {
+                return (
+                  <li
+                    className={`page-item ${
+                      currentPage === i ? "activepage" : ""
+                    } mr-[2px]`}
+                    key={idx}
+                    style={{
+                      listStyle: "none",
+                      padding: "10px",
+                      textAlign: "center",
+                      width: "15%",
+                      border: "1px solid lightgrey",
+                      borderRadius: "10%",
+                    }}
+                    onClick={() => pageClick(i)}>
+                    <a href="#" className="page-link">
+                      {i}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-            {numbers?.map((i, idx) => {
-              return (
-                <li
-                  className={`page-item ${
-                    currentPage === i ? "activepage" : ""
-                  }`}
-                  key={idx}
-                  style={{
-                    listStyle: "none",
-                    padding: "4px",
-                    border: "2px solid lightgrey",
-                  }}
-                  onClick={() => pageClick(i)}>
-                  <a href="#" className="page-link">
-                    {i}
-                  </a>
-                </li>
-              );
-            })}
-
-            <li style={{ listStyle: "none" }}>
+            <li
+              style={{
+                listStyle: "none",
+                padding: "10px",
+                textAlign: "center",
+                width: "10%",
+                border: "1px solid lightgrey",
+                borderRadius: "10%",
+              }}>
               <a
                 href="#"
                 className={currentPage >= nPage ? "anchor-disabled" : ""}

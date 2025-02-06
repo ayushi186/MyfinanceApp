@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
      
     try {
         const userId = await getDataFormToken(request)
-        console.log("userId", userId)
+      
         const user = await User.findOne({_id: userId}).select("-password")
-        console.log(user, "useer")
+       
         return NextResponse.json({
             message: "User found",
             data: user

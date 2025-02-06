@@ -12,7 +12,7 @@ try {
    
     const reqBody = await request.json();
     const { username, email, password} = reqBody;
-    console.log(reqBody);
+   
     // check if user is already existing
     const existingUser= await User.findOne({email})
     if(existingUser) {
@@ -28,7 +28,7 @@ try {
 
     const savedUser = await  newUser.save();
 
-    console.log(savedUser)
+   
 
     return NextResponse.json({
         message: "usercreated successfully",

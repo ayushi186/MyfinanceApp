@@ -19,7 +19,6 @@ export const useTransactions = (select?: any) => useQuery({
     queryKey: ["transactions"],
     queryFn: () => jsondata?.transactions,
     staleTime: Infinity,
-    refetchOnMount : false,
     select,
     
   }); 
@@ -47,7 +46,7 @@ export const useUserId = () => useQuery({
   export const useBudget = () => useQuery({
     queryKey: ["budget"],
     queryFn: () => axios.get("/api/budgets/getbudget").then((res) => res?.data.data),
-    staleTime: 100,
+    staleTime: Infinity,
    })
 
   

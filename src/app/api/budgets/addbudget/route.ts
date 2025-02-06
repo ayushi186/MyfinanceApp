@@ -1,5 +1,4 @@
 import {connect} from "@/dbConfig/dbConfig";
-
 import Budget from "@/models/newbudgets";
 import { NextRequest , NextResponse } from "next/server";
 
@@ -11,7 +10,8 @@ try {
    
     const reqBody = await request.json();
     const { username, category, maximum, theme} = reqBody;
-    console.log("reqbody", reqBody);
+    const maximumNumber = Number(maximum);
+   
    const newBudget = new Budget ( {
         username, category, maximum,  theme
     })
